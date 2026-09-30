@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Explainability — Quantum Oncology Analytics{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2 fw-bold text-dark"><i class="bi bi-eye text-primary me-2"></i>Model Explainability & Resistance Signatures</h1>
+</div>
+
+<div class="alert alert-secondary py-2 small mb-4" role="alert">
+    <i class="bi bi-info-circle me-1"></i>
+    Terminology: Features are described as <strong>Candidate computational resistance-associated features</strong> (not confirmed biological biomarkers).
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Feature Signatures Table -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-3 h-100">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-3"><i class="bi bi-list-stars text-primary me-2"></i>Candidate Resistance Signatures</h5>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-hover align-middle mb-0" id="signaturesTable">
+                        <thead class="table-light sticky-top">
+                            <tr>
+                                <th>Rank</th>
+                                <th>Feature Signature</th>
+                                <th>Predictive Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="signaturesTableBody">
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">Click "Load Signatures" to display feature rankings.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button id="btnLoadSignatures" class="btn btn-outline-primary btn-sm w-100 mt-3">
+                    <i class="bi bi-arrow-clockwise me-1"></i> Load Candidate Signatures
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Importance Bar Chart Plot -->
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-3 h-100 bg-white">
+            <div class="card-body text-center">
+                <h5 class="card-title fw-bold mb-3 text-start"><i class="bi bi-bar-chart-steps text-success me-2"></i>SHAP / Importance Plot</h5>
+                <img id="imgFeatureImportance" src="{{ url_for('static', filename='images/placeholder_plot.png') }}" class="img-fluid rounded border d-none" alt="Feature Importance Plot">
+                <div id="plotPlaceholder" class="py-5 text-muted">
+                    <i class="bi bi-image display-1 opacity-25 d-block mb-2"></i>
+                    Click "Load Candidate Signatures" to generate and display high-resolution feature plot.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('btnLoadSignatures').addEventListener('click', function() {
+    fetch('/api/signatures')
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            const tbody = document.getElementById('signaturesTableBody');
+            tbody.innerHTML = data.signatures.map((sig, idx) => `
+                <tr>
+                    <td><span class="badge bg-light text-dark border">${idx + 1}</span></td>
+                    <td class="fw-bold">${sig.feature}</td>
+                    <td>
+                        <div class="progress" style="height: 15px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: ${sig.score * 100}%">
+                                ${(sig.score * 100).toFixed(1)}%
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            const img = document.getElementById('imgFeatureImportance');
+            const placeholder = document.getElementById('plotPlaceholder');
+            img.src = '/reports/generated/feature_importance.png?' + new Date().getTime();
+            img.classList.remove('d-none');
+            placeholder.classList.add('d-none');
+        })
+        .catch(err => console.error(err));
+});
+</script>
+{% endblock %}

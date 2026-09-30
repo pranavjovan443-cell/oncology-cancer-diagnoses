@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Login — HealMind AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-5 col-lg-4">
+        <div class="card p-4 shadow-sm rounded-4 border-0">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="avatar-circle mx-auto mb-3" style="width: 54px; height: 54px; background: linear-gradient(135deg, #4f46e5, #6366f1);">
+                        <i class="bi bi-heart-pulse-fill text-white fs-4"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark mb-1">Researcher Login</h4>
+                    <p class="text-muted small">Enter your credentials to access HealMind AI platform</p>
+                </div>
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-bold small text-secondary">Username or Email</label>
+                        <input type="text" class="form-control" id="username" name="username" required placeholder="e.g. researcher">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-bold small text-secondary">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required placeholder="••••••••">
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary py-2.5">
+                            <i class="bi bi-box-arrow-in-right me-1.5"></i> Sign In
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-3 small">
+                    <span class="text-muted">Don't have an account?</span>
+                    <a href="{{ url_for('register') }}" class="fw-bold text-primary text-decoration-none ms-1">Register here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

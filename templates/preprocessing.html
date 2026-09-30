@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Preprocessing — Quantum Oncology Analytics{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2 fw-bold text-dark"><i class="bi bi-gear-wide-connected text-primary me-2"></i>Data Preprocessing & Feature Engineering</h1>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-4 h-100">
+            <h5 class="fw-bold mb-3">Preprocessing Configuration</h5>
+            <form method="POST" action="{{ url_for('preprocessing') }}">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Missing Value Imputation Strategy</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="impute_strategy" id="impMedian" value="impute" checked>
+                        <label class="form-check-label" for="impMedian">
+                            Median (Numerical) / Most Frequent (Categorical) Imputation
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="impute_strategy" id="impDrop" value="drop">
+                        <label class="form-check-label" for="impDrop">
+                            Remove incomplete rows containing missing values
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Feature Scaling</label>
+                    <input type="text" class="form-control" value="StandardScaler (Zero mean, Unit variance)" disabled>
+                    <div class="form-text">Fitted strictly on training data split (80%) to prevent data leakage.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Feature Selection Method</label>
+                    <select class="form-select" name="feature_selection_method">
+                        <option value="rf_importance" selected>Random Forest Predictive Importance (Recommended)</option>
+                        <option value="mutual_info">Mutual Information Criterion</option>
+                        <option value="variance">Variance Threshold Filter</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Classical Top-K Features</label>
+                        <input type="number" class="form-control" name="n_classical_features" value="15" min="5" max="30">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Quantum Features (Qubits)</label>
+                        <input type="number" class="form-control" name="n_quantum_qubits" value="4" min="2" max="8">
+                    </div>
+                </div>
+
+                <div class="d-grid mt-4">
+                    <button type="submit" class="btn btn-primary shadow-sm">
+                        <i class="bi bi-play-circle me-1"></i> Execute Preprocessing Pipeline
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm p-4 h-100 bg-white">
+            <h5 class="fw-bold mb-3"><i class="bi bi-shield-check text-success me-2"></i>Scientific Methodology Summary</h5>
+            <ul class="list-group list-group-flush small">
+                <li class="list-group-item bg-transparent">
+                    <strong>1. Cleaning:</strong> Automatic median/mode imputation and duplicate record removal.
+                </li>
+                <li class="list-group-item bg-transparent">
+                    <strong>2. Encoding:</strong> Label Encoding for binary target classes and One-Hot encoding for categorical predictors.
+                </li>
+                <li class="list-group-item bg-transparent">
+                    <strong>3. Train/Test Split:</strong> Stratified 80% training / 20% validation split.
+                </li>
+                <li class="list-group-item bg-transparent">
+                    <strong>4. Feature Scaling:</strong> StandardScaler fitted strictly on training fold.
+                </li>
+                <li class="list-group-item bg-transparent">
+                    <strong>5. Quantum Dimensionality Reduction:</strong> Automatic reduction to 4 quantum features for variational qubit angle embedding.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

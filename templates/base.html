@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}HealMind AI — Quantum Oncology Analytics{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="app-topbar d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <!-- Mobile Offcanvas Toggle Button -->
+            <button class="btn icon-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebarDrawer">
+                <i class="bi bi-list fs-5"></i>
+            </button>
+            
+            <!-- Brand Logo & Title -->
+            <a class="d-flex align-items-center gap-2 text-decoration-none" href="{{ url_for('index') }}">
+                <div class="avatar-circle" style="width: 38px; height: 38px; background: linear-gradient(135deg, #4f46e5, #6366f1);">
+                    <i class="bi bi-heart-pulse-fill text-white fs-5"></i>
+                </div>
+                <div>
+                    <span class="fw-bold text-dark fs-5 tracking-tight d-block leading-none">HealMind AI</span>
+                    <span class="text-muted small leading-none" style="font-size: 0.7rem; font-weight: 600;">Smarter Diagnostics. Healthier Lives.</span>
+                </div>
+            </a>
+        </div>
+
+        {% if current_user.is_authenticated %}
+        <!-- Search Input Bar (Desktop) -->
+        <div class="topbar-search d-none d-md-block">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" class="form-control" placeholder="Search patients, reports, signatures...">
+            <span class="kbd-badge">⌘ K</span>
+        </div>
+
+        <!-- Top Right Actions & Researcher Profile -->
+        <div class="d-flex align-items-center gap-3">
+            <a href="#" class="icon-btn" title="Notifications">
+                <i class="bi bi-bell"></i>
+                <span class="notification-badge">3</span>
+            </a>
+
+            <a href="#" class="icon-btn d-none d-sm-inline-flex" title="Toggle Theme">
+                <i class="bi bi-moon"></i>
+            </a>
+
+            <div class="user-profile-chip">
+                <div class="avatar-circle">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <div class="d-none d-sm-block text-start me-1">
+                    <span class="fw-bold d-block leading-tight text-dark" style="font-size: 0.85rem;">Dr. {{ current_user.username }}</span>
+                    <span class="text-muted leading-tight d-block" style="font-size: 0.7rem;">Oncology Researcher</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="text-danger ms-1" title="Logout">
+                    <i class="bi bi-box-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('login') }}" class="btn btn-sm btn-light-custom px-3">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-sm btn-primary px-3">Register</a>
+        </div>
+        {% endif %}
+    </header>
+
+    <!-- MAIN APP CONTAINER -->
+    <div class="container-fluid p-0">
+        <div class="d-flex">
+            {% if current_user.is_authenticated %}
+            <!-- DESKTOP SIDEBAR -->
+            <aside class="app-sidebar">
+                <div>
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                                <i class="bi bi-grid-1x2-fill"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'upload' %}active{% endif %}" href="{{ url_for('upload') }}">
+                                <i class="bi bi-cloud-arrow-up-fill"></i>
+                                <span>Upload Dataset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'prediction' %}active{% endif %}" href="{{ url_for('prediction') }}">
+                                <i class="bi bi-cpu-fill"></i>
+                                <span>Drug Prediction</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'reports_page' %}active{% endif %}" href="{{ url_for('reports_page') }}">
+                                <i class="bi bi-file-earmark-pdf-fill"></i>
+                                <span>Reports & Downloads</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Bottom Sidebar Promotional Card -->
+                <div class="sidebar-bottom-card">
+                    <div class="icon-box">
+                        <i class="bi bi-heart-pulse-fill"></i>
+                    </div>
+                    <h6 class="fw-bold mb-1 text-dark" style="font-size: 0.875rem;">Better Insights for Early Care</h6>
+                    <p class="text-muted small mb-0" style="font-size: 0.725rem;">AI-powered diagnostics for a healthier tomorrow.</p>
+                </div>
+            </aside>
+
+            <!-- MOBILE OFFCANVAS DRAWER -->
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileSidebarDrawer">
+                <div class="offcanvas-header border-bottom">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="avatar-circle" style="width: 32px; height: 32px; background: var(--primary);">
+                            <i class="bi bi-heart-pulse-fill text-white fs-6"></i>
+                        </div>
+                        <h5 class="offcanvas-title fw-bold">HealMind AI</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="sidebar-menu">
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                                <i class="bi bi-grid-1x2-fill"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'upload' %}active{% endif %}" href="{{ url_for('upload') }}">
+                                <i class="bi bi-cloud-arrow-up-fill"></i>
+                                <span>Upload Dataset</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'prediction' %}active{% endif %}" href="{{ url_for('prediction') }}">
+                                <i class="bi bi-cpu-fill"></i>
+                                <span>Drug Prediction</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link {% if request.endpoint == 'reports_page' %}active{% endif %}" href="{{ url_for('reports_page') }}">
+                                <i class="bi bi-file-earmark-pdf-fill"></i>
+                                <span>Reports & Downloads</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MOBILE BOTTOM ACTION NAV BAR -->
+            <nav class="mobile-bottom-nav">
+                <div class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                        <i class="bi bi-grid-1x2-fill"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'upload' %}active{% endif %}" href="{{ url_for('upload') }}">
+                        <i class="bi bi-cloud-arrow-up-fill"></i>
+                        <span>Upload</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'prediction' %}active{% endif %}" href="{{ url_for('prediction') }}">
+                        <i class="bi bi-cpu-fill"></i>
+                        <span>Prediction</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'reports_page' %}active{% endif %}" href="{{ url_for('reports_page') }}">
+                        <i class="bi bi-file-earmark-pdf-fill"></i>
+                        <span>Reports</span>
+                    </a>
+                </div>
+            </nav>
+
+            <main class="flex-grow-1 p-3 p-md-4 overflow-auto">
+            {% else %}
+            <main class="flex-grow-1 p-3 p-md-4">
+            {% endif %}
+
+                <!-- Flash Alerts -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show rounded-3 shadow-sm border-0 mb-3" role="alert">
+                                <i class="bi bi-info-circle-fill me-2"></i> {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

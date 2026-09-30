@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Register — HealMind AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card p-4 shadow-sm rounded-4 border-0">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="avatar-circle mx-auto mb-3" style="width: 54px; height: 54px; background: linear-gradient(135deg, #4f46e5, #6366f1);">
+                        <i class="bi bi-person-plus-fill text-white fs-4"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark mb-1">Researcher Registration</h4>
+                    <p class="text-muted small">Create an account for Quantum Oncology Analytics</p>
+                </div>
+                <form method="POST" action="{{ url_for('register') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-bold small text-secondary">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required placeholder="e.g. dr_arjun">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-bold small text-secondary">Email Address</label>
+                        <input type="email" class="form-control" id="email" name="email" required placeholder="e.g. arjun@oncology.lab">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-bold small text-secondary">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required placeholder="••••••••">
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label fw-bold small text-secondary">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="••••••••">
+                    </div>
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary py-2.5">
+                            <i class="bi bi-person-check-fill me-1.5"></i> Register Account
+                        </button>
+                    </div>
+                </form>
+                <div class="text-center mt-3 small">
+                    <span class="text-muted">Already registered?</span>
+                    <a href="{{ url_for('login') }}" class="fw-bold text-primary text-decoration-none ms-1">Sign In here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

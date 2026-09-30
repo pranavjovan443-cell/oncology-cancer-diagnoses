@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}Drug Resistance Prediction — HealMind AI{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <div>
+        <h3 class="fw-bold text-dark mb-1"><i class="bi bi-cpu-fill text-primary me-2"></i>Drug Resistance Computational Prediction</h3>
+        <span class="text-muted small">Evaluate patient genomic signatures using Quantum Boltzmann Machine (QBM) variational circuits.</span>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 fw-semibold">
+            <i class="bi bi-shield-check me-1"></i> PennyLane Qiskit Engine
+        </span>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Prediction Form Card -->
+    <div class="col-lg-6">
+        <div class="card p-3 p-md-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-person-lines-fill text-primary me-2"></i>Patient Feature Input</h5>
+                <span class="badge bg-light text-muted border">Input Schema</span>
+            </div>
+
+            <form id="predictionForm">
+                <div class="mb-3">
+                    <label for="patient_id_input" class="form-label fw-bold small text-secondary">Patient Identifier</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" id="patient_id_input" placeholder="e.g. PAT-98A1B2" style="font-size: 0.95rem;">
+                        <button class="btn btn-outline-secondary" type="button" id="btnGenPatientId">
+                            <i class="bi bi-shuffle me-1"></i> Generate ID
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="model_select" class="form-label fw-bold small text-secondary">Select Trained Model</label>
+                    <select class="form-select form-select-lg" id="model_select" style="font-size: 0.95rem;">
+                        <option value="Quantum Boltzmann Machine (QBM)" selected>Quantum Boltzmann Machine (QBM)</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="medicine_select" class="form-label fw-bold small text-secondary">
+                        <i class="bi bi-capsule text-danger me-1"></i>Select Target Cancer Medicine / Treatment
+                    </label>
+                    <select class="form-select form-select-lg" id="medicine_select" style="font-size: 0.95rem;">
+                        <option value="General Multi-Drug Resistance Benchmark" selected>General Multi-Drug Resistance Benchmark</option>
+                        <option value="Tamoxifen (ER+ Endocrine Targeted Therapy)">Tamoxifen (ER+ Endocrine Targeted Therapy)</option>
+                        <option value="Trastuzumab / Herceptin (HER2 Monoclonal Antibody)">Trastuzumab / Herceptin (HER2 Monoclonal Antibody)</option>
+                        <option value="Paclitaxel / Taxol (Taxane Chemotherapy)">Paclitaxel / Taxol (Taxane Chemotherapy)</option>
+                        <option value="Palbociclib / Ibrance (CDK4/6 Cell-Cycle Inhibitor)">Palbociclib / Ibrance (CDK4/6 Cell-Cycle Inhibitor)</option>
+                        <option value="Olaparib / Lynparza (PARP Inhibitor)">Olaparib / Lynparza (PARP Inhibitor)</option>
+                        <option value="Pembrolizumab / Keytruda (PD-1 Immunotherapy)">Pembrolizumab / Keytruda (PD-1 Immunotherapy)</option>
+                    </select>
+                    <div class="form-text text-muted small mt-1">Select the target therapeutic agent to evaluate computational resistance against.</div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label fw-bold small text-secondary mb-0">Genomic / Clinical Feature Values (30 Variables)</label>
+                    <button type="button" class="btn btn-sm btn-light-custom" id="btnFillDemoValues">
+                        <i class="bi bi-magic me-1"></i> Fill Demo Values
+                    </button>
+                </div>
+
+                <div id="featureInputContainer" class="p-3 bg-light rounded-3 border mb-3" style="max-height: 320px; overflow-y: auto;">
+                    <p class="text-muted small mb-0">Feature inputs will auto-populate based on trained dataset schema.</p>
+                </div>
+
+                <div class="d-grid mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg py-3 shadow-sm" id="btnPredict">
+                        <i class="bi bi-cpu me-2"></i> Generate Drug Resistance Prediction
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Prediction Output Result Card -->
+    <div class="col-lg-6">
+        <div class="card p-3 p-md-4 h-100 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-3">
+                <h5 class="fw-bold mb-0 text-dark"><i class="bi bi-clipboard-data-fill text-primary me-2"></i>Prediction Result Output</h5>
+                <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1 fw-bold">Live AI Analysis</span>
+            </div>
+            
+            <div id="predictionPlaceholder" class="text-center py-5 text-muted my-auto">
+                <div class="avatar-circle mx-auto mb-3" style="width: 72px; height: 72px; background: var(--primary-light); color: var(--primary); font-size: 2rem;">
+                    <i class="bi bi-heart-pulse"></i>
+                </div>
+                <h6 class="fw-bold text-dark mb-1">Awaiting Patient Feature Input</h6>
+                <p class="small text-muted mb-0" style="max-width: 320px; margin: 0 auto;">Enter genomic/clinical patient variables and click "Generate Drug Resistance Prediction".</p>
+            </div>
+
+            <div id="predictionResultContent" class="d-none text-center py-2">
+                <span class="text-muted text-uppercase small fw-bold tracking-wider d-block mb-1">Computational Prediction Result</span>
+                <h2 class="fw-extrabold mb-3" id="resPredictionLabel">-</h2>
+                
+                <div class="p-4 rounded-4 bg-light border mb-4 shadow-xs">
+                    <span class="text-muted d-block small fw-semibold text-uppercase">Quantum Model Probability Score</span>
+                    <h1 class="display-3 fw-bold text-primary my-1" id="resProbabilityScore">0.0%</h1>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-1.5 fw-semibold" id="resModelBadge">Model Name</span>
+                </div>
+
+                <!-- Therapeutic Category & Regimens -->
+                <div id="therapeuticInfoContainer" class="p-3.5 rounded-4 bg-white border border-primary-subtle shadow-xs mb-3 text-start d-none">
+                    <h6 class="fw-bold mb-2 text-primary d-flex align-items-center">
+                        <i class="bi bi-capsule-pill text-danger me-2 fs-5"></i>Computational Therapeutic Category
+                    </h6>
+                    <div class="fw-semibold text-dark small mb-3 p-2 rounded bg-light border" id="resTherapeuticCategory">-</div>
+
+                    <div class="mb-2">
+                        <span class="small fw-bold d-block text-muted mb-2">Candidate Computational Agents / Regimens:</span>
+                        <div id="resMedicineBadges" class="d-flex flex-column gap-2"></div>
+                    </div>
+
+                    <div class="alert alert-secondary py-2.5 px-3 small mb-0 mt-3 rounded-3" role="alert">
+                        <i class="bi bi-info-circle-fill me-1 text-primary"></i> <span id="resMechanismSummary">-</span>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning py-2.5 px-3 small rounded-3 mb-3" role="alert">
+                    <i class="bi bi-shield-exclamation me-1"></i> 
+                    Probability output is a computational model score, not a clinical treatment failure probability.
+                </div>
+
+                <button id="btnGeneratePDF" class="btn btn-outline-danger w-100 py-2.5 fw-semibold rounded-3">
+                    <i class="bi bi-file-earmark-pdf-fill me-1.5"></i> Download PDF Research Report
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+{% endblock %}

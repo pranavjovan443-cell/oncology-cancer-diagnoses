@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Classical ML Models — Quantum Oncology Analytics{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2 fw-bold text-dark"><i class="bi bi-bar-chart-line text-primary me-2"></i>Classical Machine Learning Benchmark</h1>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- SVM Card -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-3">
+            <div class="card-body text-center">
+                <i class="bi bi-bounding-box-circles text-primary display-4 mb-2"></i>
+                <h5 class="fw-bold">Support Vector Machine</h5>
+                <p class="text-muted small">Radial Basis Function (RBF) kernel with Platt probability scaling.</p>
+                <button id="btnTrainSVM" class="btn btn-outline-primary btn-sm mt-2 w-100">
+                    <i class="bi bi-cpu me-1"></i> Train SVM Model
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Random Forest Card -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-3">
+            <div class="card-body text-center">
+                <i class="bi bi-tree text-success display-4 mb-2"></i>
+                <h5 class="fw-bold">Random Forest</h5>
+                <p class="text-muted small">Ensemble of 100 decision trees for robust non-linear feature interaction.</p>
+                <button id="btnTrainRF" class="btn btn-outline-success btn-sm mt-2 w-100">
+                    <i class="bi bi-cpu me-1"></i> Train Random Forest
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deep Learning Card -->
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100 p-3">
+            <div class="card-body text-center">
+                <i class="bi bi-layers text-danger display-4 mb-2"></i>
+                <h5 class="fw-bold">Deep Neural Network</h5>
+                <p class="text-muted small">Multi-layer perceptron (Keras/TensorFlow) with Dropout and Early Stopping.</p>
+                <button id="btnTrainDL" class="btn btn-outline-danger btn-sm mt-2 w-100">
+                    <i class="bi bi-cpu me-1"></i> Train Deep Learning
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Benchmark Metrics Table -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h5 class="card-title fw-bold mb-0"><i class="bi bi-table me-2"></i>Model Performance Comparison</h5>
+        <button id="btnRefreshMetrics" class="btn btn-sm btn-primary">
+            <i class="bi bi-arrow-clockwise me-1"></i> Refresh Benchmark Metrics
+        </button>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" id="metricsTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Model</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-Score</th>
+                    <th>ROC-AUC</th>
+                    <th>Training Time</th>
+                </tr>
+            </thead>
+            <tbody id="metricsTableBody">
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">Click "Train" on a model above or "Refresh Benchmark Metrics" to populate results.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

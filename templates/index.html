@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Home — Quantum Oncology Analytics{% endblock %}
+
+{% block content %}
+<div class="hero-bg-wrapper my-3">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-info text-dark px-3 py-2 fs-6 mb-3 shadow-sm">Oncology Computational Research Prototype</span>
+            <h1 class="display-4 fw-bold text-white mb-3">Predictive Modeling in Oncology</h1>
+            <h3 class="text-info fw-normal mb-4">Using Quantum Boltzmann Machines for Rapid Identification of Drug Resistance Signatures</h3>
+            <p class="lead text-light mb-4">
+                An end-to-end research platform utilizing Quantum Boltzmann Machines (QBM) for rapid identification of computational drug resistance signatures.
+            </p>
+            <div class="d-flex gap-3">
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg px-4 shadow-sm">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Researcher Login
+                </a>
+                <a href="{{ url_for('register') }}" class="btn btn-outline-light btn-lg px-4">
+                    <i class="bi bi-person-plus me-2"></i> Register Account
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-5 text-center mt-4 mt-lg-0">
+            <div class="card border-0 shadow-lg p-4 glass-card rounded-4 text-dark">
+                <i class="bi bi-cpu text-primary display-1 mb-3"></i>
+                <h5 class="fw-bold">Quantum Boltzmann Machine (QBM) Architecture</h5>
+                <p class="text-muted small">
+                    Simulates variational quantum Boltzmann circuits using PennyLane & Qiskit Aer local CPU simulation.
+                </p>
+                <hr>
+                <div class="row text-start small">
+                    <div class="col-6 mb-2"><i class="bi bi-check-circle-fill text-success me-1"></i> Variational QBM Model</div>
+                    <div class="col-6 mb-2"><i class="bi bi-check-circle-fill text-success me-1"></i> PennyLane Simulation</div>
+                    <div class="col-6 mb-2"><i class="bi bi-check-circle-fill text-success me-1"></i> Drug Selection</div>
+                    <div class="col-6 mb-2"><i class="bi bi-check-circle-fill text-success me-1"></i> Rapid Prediction</div>
+                    <div class="col-6 mb-2"><i class="bi bi-check-circle-fill text-success me-1"></i> Automated PDF Reports</div>
+                    <div class="col-6 mb-2"><i class="bi bi-check-circle-fill text-success me-1"></i> SQLite Database</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 py-4">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm p-3">
+            <div class="card-body">
+                <i class="bi bi-cloud-arrow-up text-primary fs-2 mb-2"></i>
+                <h5 class="card-title fw-bold">1. Dataset Management</h5>
+                <p class="card-text text-muted small">Upload CSV genomic datasets or utilize built-in public demonstration datasets with automatic cleaning, scaling, and feature selection.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm p-3">
+            <div class="card-body">
+                <i class="bi bi-diagram-3 text-info fs-2 mb-2"></i>
+                <h5 class="card-title fw-bold">2. Quantum Boltzmann Machine (QBM)</h5>
+                <p class="card-text text-muted small">Evaluate patient genomic features using Quantum Variational Boltzmann Circuits to compute probability of target drug resistance.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm p-3">
+            <div class="card-body">
+                <i class="bi bi-shield-check text-success fs-2 mb-2"></i>
+                <h5 class="card-title fw-bold">3. Resistance Signatures</h5>
+                <p class="card-text text-muted small">Extract candidate computational drug-resistance signatures and generate downloadable ReportLab PDF research summaries.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
